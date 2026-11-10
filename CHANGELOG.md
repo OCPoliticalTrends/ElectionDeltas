@@ -2,6 +2,10 @@
 
 Each entry says whether a change can move a number in an existing result.
 
+## 2026-11-10 (documentation)
+
+**No numbers move.** PLAN.md gains a "Fit flags" section stating the poor-fit and vote-split rules in full: the two regressions, the thresholds and how they were chosen, where each kind of race gets its prediction, and the limits. The comment on `fit_flag()` in `R/diagnostics.R` now matches it.
+
 ## 2026-11-10
 
 **No numbers move** in the general-election results: `results.csv`, `candidate_effects.csv`, `model_summary.csv`, and `leave_one_contest_out.csv` for 2024, 2022–2024, and 2016–2024 are byte-for-byte identical to those of the first commit. New results are added (below).

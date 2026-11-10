@@ -177,7 +177,7 @@ Kept separate: Alan and Josh Lowenthal; Linda and Kate Sanchez; Janet and Diedre
 
 Treating Congressional District 45 in 2024 (Tran vs. Steel) as a designated race, with it removed from the main fit, reproduces its leave-one-contest-out result (skew 0.049, slope 0.95, R² 0.805), which checks the method.
 
-Designated races where other candidates split one side's vote carry `vote_split` = `vote-split` in `nonpartisan_skews.csv` (see "Supervisor results"). Races that one precinct lean predicts poorly carry `fit_flag` = `poor partisan fit` in `results.csv` and `nonpartisan_skews.csv`: R² after a single shift below 0.75, or slope outside 0.75–1.33 (`POOR_FIT` in `R/fit.R`). For a partisan race the slope and R² come from the leave-one-contest-out check. A flagged race's skew averages over a pattern that the D/R reading fits poorly.
+Designated races carry two flags, `fit_flag` and `vote_split`; see "Fit flags".
 
 Current list: every contested county supervisor race of 2016–2026 (22 races, in general, primary, and vacancy elections; Michael considers supervisor races crypto-partisan). 19 are designated: in each, the top two finishers, D and R by party alignment, as proposed on November 10, 2026 and confirmed by Michael. Three are not designated: the June 2026 Second District race (Vicente Sarmiento won with 66% against Kimberly Davis, probably a Democrat, Nelida Mendoza, and James Wallace; no Republican is identified, and Michael decided on November 10, 2026 to leave it out), and both 2022 Fourth District races, Doug Chaffee vs. Sunny Park, two Democrats (first designated D vs. R in error; their negative slopes on precinct lean, −0.29 in June and −0.37 in November, were the symptom).
 
@@ -187,6 +187,27 @@ Current list: every contested county supervisor race of 2016–2026 (22 races, i
 - *Vacancy elections.* The 2019 and 2021 vacancy elections have no D-vs-R contest, so their skews rest on the anchor's lean alone (`lean_source` = `anchor lean`) and include that electorate's shift; the 2019 race also matches only 60 of 103 precincts.
 
 Where the reading holds, repeat matchups agree: Martinez vs. Do −0.31 (June 2016) and −0.40 (November 2016); Contreras vs. Do −0.35 (November 2020); Marquez vs. Janet Nguyen −0.16 (March 2024, five candidates) and −0.30 (November 2024). Andrew Do ran ahead of his precincts' partisan lean in every race.
+
+### Fit flags
+
+Two flags mark race skews to read with care. Both are descriptive rules, not statistical tests: they have no p-value, and their thresholds are choices made for this project.
+
+**`fit_flag` = `poor partisan fit`** (in `results.csv`, `secondary_skews.csv`, `nonpartisan_skews.csv`, and `measure_skews.csv`) marks a race that one precinct lean predicts poorly. Each race has a predicted logit share in every precinct, and two regressions on the empirical logits, each weighted by the precinct's two-candidate votes, measure how well that prediction explains the race:
+
+- *shift only*: actual = predicted + a constant (the skew); **R²** is the share of the race's precinct-to-precinct variance this explains;
+- *shift and slope*: actual = a + slope × predicted; the **slope** is how strongly the race follows partisanship (1: one point of lean moves the race one point).
+
+A race is flagged when R² is below 0.75 or the slope lies outside 0.75–1.33 (`POOR_FIT` in `R/config.R`). The prediction comes from:
+
+- for a partisan race in a general election, the leave-one-contest-out check: the precinct leans are re-estimated from the other races of the same election, without the race itself;
+- for a race in a secondary election, the main fit's precinct leans of the anchor general, scaled by that election's shift and slope from the second stage;
+- for a designated nonpartisan race or a proposition, the main fit's precinct leans (and, in a secondary election, that election's shift and slope where the second stage has them).
+
+The thresholds were set just outside the range of the 2024 partisan races (run of November 9, 2026: every race had R² of 0.80 or more and a slope of 0.90–1.19); the slope band runs from 0.75 to 1/0.75 ≈ 1.33, the same proportional deviation either way. On 2016–2024 they flag 1 of 100 partisan races in general elections. A flagged race's skew averages over a pattern that the D/R reading fits poorly.
+
+Two limits. The skew holds the slope at 1, so a race with a very different slope gets a low or even negative R² from the shift-only fit; the flag then says that the skew alone describes the race poorly. Nonpartisan races and propositions follow partisanship less closely than partisan races by nature, so the same thresholds flag nearly all of them (every supervisor race but one, and 55 of 62 propositions); thresholds of their own, or a per-race slope (methodology improvement 2), would separate the expected weaker link from genuinely poor fits.
+
+**`vote_split` = `vote-split`** (in `nonpartisan_skews.csv`) marks a designated race whose two designated candidates hold less than 90% of all its votes (`VOTE_SPLIT_MIN` in `R/config.R`). Other candidates then take votes from one side, so the two-candidate share no longer measures a head-to-head, and the skew should not be compared with head-to-head races.
 
 ### Statewide propositions
 

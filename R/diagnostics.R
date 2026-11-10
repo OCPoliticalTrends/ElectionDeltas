@@ -68,10 +68,12 @@ race_fit_stats <- function(t) {
 
 # A race is flagged when one precinct lean predicts it poorly: its R^2 after a
 # single shift is below POOR_FIT$min_R2, or its slope on the lean lies outside
-# POOR_FIT$slope. For a partisan race the slope and R^2 come from the
-# leave-one-contest-out check; for a designated nonpartisan race, from its own
-# regressions. A flagged race's skew averages over a pattern that the D/R
-# reading fits poorly.
+# POOR_FIT$slope. This is a descriptive rule, not a statistical test. For a
+# partisan race of a general election the slope and R^2 come from the
+# leave-one-contest-out check; for a secondary-election race, a designated
+# nonpartisan race, or a proposition, from race_fit_stats() against its
+# predicted lean. A flagged race's skew averages over a pattern that the D/R
+# reading fits poorly. PLAN.md ("Fit flags") states the rule and its limits.
 fit_flag <- function(slope, R2) {
   ifelse(R2 < POOR_FIT$min_R2 | slope < POOR_FIT$slope[1] | slope > POOR_FIT$slope[2],
          "poor partisan fit", "")
