@@ -134,9 +134,9 @@ Prepare the data in either language; fit in R.
 
 ## Code
 
-All in R (`data.table`, `glmmTMB`). Run from the project folder:
+All in R (`data.table`, `glmmTMB`). The project is a git repository published at https://github.com/OCPoliticalTrends/ElectionDeltas (public); `data/` is not tracked. Run from the project folder:
 
-- `Rscript run.R` fits every election marked `ready` in `R/elections.R`; `Rscript run.R 2022-11-08 2024-11-05` fits the elections named. `--cores N` sets the worker processes for the leave-one-contest-out refits (default: all cores but one). A full 2016–2024 run takes about 9 minutes.
+- `Rscript run.R` fits every election marked `ready` in `R/elections.R`; `Rscript run.R 2022-11-08 2024-11-05` fits the elections named. `--cores N` sets the worker processes for the leave-one-contest-out refits (default: all cores but one). `--secondary` adds the second stage (see "Secondary elections"). A full 2016–2024 run takes about 9 minutes. R reads `run.R` while running it, so editing `run.R` during a run makes the run execute the edited text from where it had reached; edit it only between runs.
 - `Rscript tests/run_tests.R` runs the tests of the documented rules (base R, made-up inputs, no election data; about 10 seconds). Each test was checked by breaking the code it covers and confirming the test fails.
 
 | File | Role |
@@ -152,8 +152,9 @@ All in R (`data.table`, `glmmTMB`). Run from the project folder:
 | `R/fit.R` | `fit_skew()` with either candidate or contest effects, either an observation-level effect or beta-binomial, and (contest model) one pooled skew variance or a separate one per election; `fit_all()` and the main fit; effects and precinct leans. |
 | `R/diagnostics.R` | The leave-one-contest-out check (refits in parallel) and the fit flag. |
 | `R/nonpartisan.R` | Skews of nonpartisan races designated D and R by hand in `nonpartisan.csv` (see below). |
+| `R/measures.R` | Every statewide proposition, tested automatically as a two-choice race (see "Statewide propositions"). |
 | `R/report.R` | The output tables and the console summary. |
-| `run.R` | Fits the chosen elections and writes five CSV files to `output/<years>/`, replacing the previous run's: `results.csv` (one row per race: Democratic share, race skew with standard error and in percentage points, each candidate's effect, and the race's leave-one-contest-out slope and R² with a fit flag), `candidate_effects.csv` (one row per candidate, with component), `model_summary.csv` (convergence, AIC, intercepts, variance components), `leave_one_contest_out.csv`, and `nonpartisan_skews.csv`. Effects are on the logit scale and positive when the candidate ran ahead of the party baseline. |
+| `run.R` | Fits the chosen elections and writes five CSV files to `output/<years>/`, replacing the previous run's: `results.csv` (one row per race: Democratic share, race skew with standard error and in percentage points, each candidate's effect, and the race's leave-one-contest-out slope and R² with a fit flag), `candidate_effects.csv` (one row per candidate, with component), `model_summary.csv` (convergence, AIC, intercepts, variance components), `leave_one_contest_out.csv`, `nonpartisan_skews.csv`, and `measure_skews.csv`. Effects are on the logit scale and positive when the candidate ran ahead of the party baseline. |
 
 Adding an election: put its file in `data/` as `<date>_<type>.<csv|txt>`, add a layout to `LAYOUTS` if needed and an entry to `ELECTIONS`, run it once so that `update_candidates()` adds its candidates to `candidates.csv`, and fill in `party` and `person_id` by hand where the file lacks them.
 
@@ -165,6 +166,7 @@ Default person IDs come from the ballot name (uppercased, accents transliterated
 - Linda T. Sánchez, printed `S-NCHEZ` in 2022–2024: `LINDA_T_SANCHEZ`. Her sister Loretta Sanchez is a different person (her 2016 and 2020 races are not in the model).
 - Bob J. Archuleta (2018) and Bob Archuleta (2022): `BOB_ARCHULETA`.
 - Diedre Nguyen (2020) and Diedre Thu-Ha Nguyen (2022): `DIEDRE_THU_HA_NGUYEN`.
+- Catherine Blakespear (2022) and Catherine S. Blakespear (June 2026 primary): `CATHERINE_BLAKESPEAR` (confirmed November 10, 2026).
 - Presidential tickets are linked by presidential nominee: `DONALD_J_TRUMP` (2016, 2020, 2024), `HILLARY_CLINTON`, `JOSEPH_R_BIDEN`, `KAMALA_D_HARRIS` (2024 only).
 
 Kept separate: Alan and Josh Lowenthal; Linda and Kate Sanchez; Janet and Diedre Nguyen; Phillip, Lanhee, and Jay Chen.
@@ -175,9 +177,22 @@ Kept separate: Alan and Josh Lowenthal; Linda and Kate Sanchez; Janet and Diedre
 
 Treating Congressional District 45 in 2024 (Tran vs. Steel) as a designated race, with it removed from the main fit, reproduces its leave-one-contest-out result (skew 0.049, slope 0.95, R² 0.805), which checks the method.
 
-Races that one precinct lean predicts poorly carry `fit_flag` = `poor partisan fit` in `results.csv` and `nonpartisan_skews.csv`: R² after a single shift below 0.75, or slope outside 0.75–1.33 (`POOR_FIT` in `R/fit.R`). For a partisan race the slope and R² come from the leave-one-contest-out check. A flagged race's skew averages over a pattern that the D/R reading fits poorly.
+Designated races where other candidates split one side's vote carry `vote_split` = `vote-split` in `nonpartisan_skews.csv` (see "Supervisor results"). Races that one precinct lean predicts poorly carry `fit_flag` = `poor partisan fit` in `results.csv` and `nonpartisan_skews.csv`: R² after a single shift below 0.75, or slope outside 0.75–1.33 (`POOR_FIT` in `R/fit.R`). For a partisan race the slope and R² come from the leave-one-contest-out check. A flagged race's skew averages over a pattern that the D/R reading fits poorly.
 
-Current list: 2022 Supervisor District 2 (Vicente Sarmiento as D, Kim Bernice Nguyen as R); 2022 Supervisor District 5 (Katrina Foley as D, Pat Bates as R); 2024 Supervisor District 1 (Frances Marquez as D, Janet Nguyen as R). Donald Wagner vs. Farrah Khan (2024 Supervisor District 3) was decided in the March 2024 primary and is not in the November files.
+Current list: every contested county supervisor race of 2016–2026 (22 races, in general, primary, and vacancy elections; Michael considers supervisor races crypto-partisan). 19 are designated: in each, the top two finishers, D and R by party alignment, as proposed on November 10, 2026 and confirmed by Michael. Three are not designated: the June 2026 Second District race (Vicente Sarmiento won with 66% against Kimberly Davis, probably a Democrat, Nelida Mendoza, and James Wallace; no Republican is identified, and Michael decided on November 10, 2026 to leave it out), and both 2022 Fourth District races, Doug Chaffee vs. Sunny Park, two Democrats (first designated D vs. R in error; their negative slopes on precinct lean, −0.29 in June and −0.37 in November, were the symptom).
+
+**Supervisor results** (`Rscript run.R --secondary` on 2016–2024, November 10, 2026; `nonpartisan_skews.csv`). Read three caveats with them:
+- *Vote-splitting.* In a race with more than two candidates, the other candidates take votes from one side, and the two-candidate share moves with them. Foley vs. Bates in the June 2022 primary shows +0.85 because Diane Harkey and Kevin Muldoon split the Republican vote (Bates had 22%); Contreras vs. Do in the March 2020 primary shows −0.92 with Miguel Pulido and Kim Bernice Nguyen in the race. The columns `candidates` and `designated_vote_share` show where this applies, and `vote_split` = `vote-split` marks races where the two designated candidates hold less than 90% of the vote (`VOTE_SPLIT_MIN` in `R/config.R`); their skews should not be compared with head-to-head races. 10 of the 19 designated supervisor races are flagged. Head-to-head races (all November races, Aitken vs. Wagner in 2020, Khan vs. Wagner in 2024) and Foley vs. Dixon in June 2026 (94%) are not. The full fix is methodology improvement 7.
+- *Partisanship fits supervisor races less well.* Every supervisor race but Khan vs. Wagner (2024) is flagged. The Fourth District fits worst: Chaffee vs. Shaw has a slope of 0.36–0.37 in 2018.
+- *Vacancy elections.* The 2019 and 2021 vacancy elections have no D-vs-R contest, so their skews rest on the anchor's lean alone (`lean_source` = `anchor lean`) and include that electorate's shift; the 2019 race also matches only 60 of 103 precincts.
+
+Where the reading holds, repeat matchups agree: Martinez vs. Do −0.31 (June 2016) and −0.40 (November 2016); Contreras vs. Do −0.35 (November 2020); Marquez vs. Janet Nguyen −0.16 (March 2024, five candidates) and −0.30 (November 2024). Andrew Do ran ahead of his precincts' partisan lean in every race.
+
+### Statewide propositions
+
+Added November 10, 2026 (`R/measures.R`; `measure_skews.csv`). Every statewide proposition with exactly the choices Yes and No is estimated like a designated nonpartisan race, with no hand designation: the D side is the choice whose share rises with precinct Democratic lean (the sign of the slope of logit(Yes) on the predicted lean). Titles are matched as "Proposition 13" (2020 on) or "51-SCHOOL BONDS. ..." (2016–2018); local lettered measures, judicial retention votes, and recalls are left out. Per proposition, `d_side` is the D-aligned choice, `slope` and `R2_shift` say how partisan the measure was (near 1, as partisan as a candidate race; near 0, partisanship did not predict it, the D side is arbitrary, and the fit flag fires), and `race_skew` is how far the D side ran ahead of the precincts' partisan lean. A main run covers the propositions of the general elections; `--secondary` adds those of primaries and special elections (for example, Proposition 50 on November 4, 2025, estimated against the November 2024 lean alone, `lean_source` = `anchor lean`). Orientation by party endorsement, as a hand override, is possible later.
+
+**First results** (`Rscript run.R --secondary` on 2016–2024, November 10, 2026). 62 propositions (2016–2025). Only 7 are unflagged (slope 0.75–1.33 and R² after a single shift of 0.75 or more): 2024 Propositions 32 (minimum wage), 4 (climate bond), and 6; 2016 Proposition 55 (tax extension); 2020 Propositions 15 (commercial property tax) and 17 (parolee voting); 2022 Proposition 28 (arts education). The most partisan by slope is Proposition 50 (November 2025, slope 1.37, R² 0.84, flagged only because its slope exceeds 1.33). Most propositions follow partisanship weakly: half have a slope below 0.5, and for those the D side is close to arbitrary. The D side is No for 2024 Proposition 36 (sentencing), 2020 Proposition 22 (app-based drivers), and 2018 Proposition 6 (gas-tax repeal), among others. Because the skew holds the slope at 1, it is meaningful only where the slope is near 1; for the rest, read `slope` and `R2_slope` (how partisan the measure was) and ignore `race_skew`.
 
 ## 2024 demonstration results
 
@@ -224,7 +239,7 @@ The November 3, 2026 results are due to be certified by December 3, 2026.
 
 1. Download the plain-text extract from the OC Vote archive (https://ocvote.gov/data/election-results-archives/archived-statement-of-votes) and unzip it into `data/` as `2026-11-03_general.txt` (or `.csv`, after its actual format). Each election's extract is the "Plain-text extract for data analysis (media.zip)" link on that page; the URL pattern varies by year.
 2. Inspect the header and separator. 2022 and 2024 are tab-separated with headers `.Precinct`, `Choice Name` (2024: `Choice Name1`), `Total Votes`, `Vote Center Votes`, and `Vote by Mail Votes`. If 2026 matches, add `"2026-11-03" = list(type = "general", file = "2026-11-03_general.txt", layout = "tab_2022", ready = TRUE)` to `ELECTIONS` in `R/elections.R`, with a `rename` for any renamed column; otherwise add a layout. `read_election()` stops with the names of any missing columns, and the layout's check stops if the total votes differ from the sum of the vote-method columns.
-3. Check the encoding of accented names and whether pseudo-precinct `99999` appears again (it is dropped by default).
+3. Check the encoding of accented names and whether pseudo-precinct `99999` appears again (it is dropped by default). Set the `anchor` of the June 2, 2026 primary in `R/elections.R` to `2026-11-03`, and check its precinct match (as in the secondary-election match table).
 4. Run `Rscript run.R 2026-11-03` once to add the 2026 candidates to `candidates.csv`. Review the new rows: party labels (`party`), and links to earlier candidates (`person_id`; candidates who reappear under a different ballot name, such as a new middle initial or nickname). Ask Michael about any ambiguous match (for example, the Sánchez sisters).
 5. Designate nonpartisan races of interest (for example, the 2026 supervisor races) in `nonpartisan.csv` with `add_nonpartisan()`, marking one candidate `DEM` and one `REP`.
 6. Run `Rscript run.R` for all elections; results go to `output/2016_2018_2020_2022_2024_2026/`. Run long jobs with the log outside OneDrive (OneDrive has truncated logs written inside this folder while R was writing them).
@@ -232,9 +247,9 @@ The November 3, 2026 results are due to be certified by December 3, 2026.
 
 The 2026 midterm has statewide races; under the top-two primary some may be two candidates of the same party, which drop out of the model.
 
-## Proposed: secondary elections (primaries, odd-year, and special elections)
+## Secondary elections (primaries, odd-year, and special elections)
 
-Proposed on November 10, 2026. The extracts are downloaded and load; the second stage is not implemented.
+Proposed and implemented on November 10, 2026 (`R/secondary.R`, `Rscript run.R --secondary`).
 
 **Downloaded extracts** (November 10, 2026, from the OC Vote archive), registered with `role = "secondary"` in `R/elections.R`; all load, and every vote-total check passes. One-D-one-R contests are those with exactly one Democrat, one Republican, and no candidate without a party; multi-candidate contests have a Democrat and a Republican but more than one of either.
 
@@ -252,14 +267,14 @@ Proposed on November 10, 2026. The extracts are downloaded and load; the second 
 | Nov 4, 2025 statewide special | `2025-11-04_special.txt` | 2,174 | 0 (Proposition 50 only) | 0 | Nov 2024 (1.00; 1.00) |
 | June 2, 2026 primary | `2026-06-02_primary.txt` | 2,259 | 13 | 16 | Nov 2024 (0.85; 0.89), until Nov 2026 is available |
 
-In all, 39 one-D-one-R contests (2016–2026 primaries) can enter the second stage as proposed, and 66 multi-candidate contests would need a multinomial extension. Among the one-D-one-R contests is 2016 Assembly District 69 (Daly vs. Velarde-Garcia), the race flagged in the 2016 general. Not downloaded: the supervisor vacancy elections (2015, 2019, 2021), the 2021 recall, and the June 10, 2025 special election.
+In all, 39 one-D-one-R contests (2016–2026 primaries) can enter the second stage as proposed, and 66 multi-candidate contests would need a multinomial extension. Among the one-D-one-R contests is 2016 Assembly District 69 (Daly vs. Velarde-Garcia), the race flagged in the 2016 general. Also downloaded (November 10, 2026), for their supervisor races: the March 12, 2019 Third District and March 9, 2021 Second District vacancy elections (`2019-03-12_special.csv`, `2021-03-09_special.csv`). The 2021 election matches November 2020 on all ballots; the 2019 election matches November 2018 on only 33% of ballots (its precincts were consolidated differently), so its supervisor race (Wagner vs. Loretta Sanchez) needs a precinct crosswalk before its estimate means much. Not downloaded: the January 27, 2015 First District vacancy election, the 2021 recall, and the June 10, 2025 special election.
 
 **Peculiarities to factor out.**
 1. A different electorate: lower, older, more partisan turnout shifts the D share at a given precinct lean, and can make partisanship steeper or flatter.
 2. Few partisan contests: a special election with one or two D-vs-R contests cannot estimate its own precinct leans, so a lone contest's skew is confounded with the election intercept.
 3. Several candidates per party in top-two primaries: the two-candidate share exists only where exactly one Democrat and one Republican run. Presidential primaries are party ballots and are not D-vs-R contests.
 
-**Model.** Estimate secondary elections in a second stage, against the precinct leans of the main fit, as is done for nonpartisan races. Each secondary election e′ is linked to an anchor general election g (the same year's November general for a primary; the nearest general for an odd-year or special election). For precinct i and contest j:
+**Model.** Secondary elections are estimated in a second stage, against the precinct leans of the main fit. Each secondary election e′ is linked to an anchor general election g (`anchor` in `R/elections.R`): the same year's November general, except the June 2026 primary, anchored to November 2024 until November 2026 is available. Precincts are joined to the anchor by precinct number; precincts without a match drop out, and `secondary_summary.csv` reports the share of two-party votes kept. For precinct i and contest j:
 
 ```
 logit(pi_ij) = a_e' + b_e' * lean_i^g + s_j + eps_ij
@@ -268,10 +283,30 @@ logit(pi_ij) = a_e' + b_e' * lean_i^g + s_j + eps_ij
 - lean_i^g = beta_g + u_i from the main fit, held fixed;
 - a_e′, a shift per secondary election (electorate composition and baseline);
 - b_e′, a slope per secondary election (how strongly partisanship sorts that electorate);
-- s_j, the race skew, with a variance per secondary election where it has enough contests and pooled by election type otherwise;
+- s_j, the race skew, with one variance pooled over the secondary elections fitted (each primary has 4–13 usable contests, too few for a variance of its own);
 - eps_ij, the observation-level effect.
 
-Fitted with glmmTMB as `cbind(D, R) ~ 0 + election + election:lean + (1 | contest_key) + (1 | obs)` over all secondary elections chosen. Their skews are then on the scale of the general-election skews, net of each election's shift and slope. This makes the secondary elections optional (`role = "secondary"` in `ELECTIONS`, included only when asked), gives them zero weight in the precinct leans and variances of the main fit, and factors out their peculiarities through a_e′, b_e′, and their own skew variances. Contest selection is the existing rule (exactly one Democrat and one Republican); multi-candidate primary contests could later enter through a multinomial model.
+Fitted with glmmTMB as `cbind(D, R) ~ 0 + election + election:lean + (1 | contest_key) + (1 | obs)` over every secondary election whose anchor is in the run. Their skews are on the scale of the general-election skews, net of each election's shift and slope. The secondary elections are optional (`role = "secondary"` in `ELECTIONS`, included only with `--secondary`), have zero weight in the precinct leans and variances of the main fit, and have their peculiarities factored out through a_e′ and b_e′. Outputs: `secondary_skews.csv` (one row per race: skew, slope and R² against the election's predicted lean, fit flag, and `general_race_skew`, the skew of the same two candidates for the same office in that year's general, where there is one) and `secondary_summary.csv` (per election: anchor, contests, coverage, shift, slope, and skew SD).
+
+Candidates of secondary elections enter `candidates.csv` like any others. A new row whose ballot name gives the same default ID as a row already linked by hand takes that link (for example, `LINDA T. S-NCHEZ` in a primary becomes `LINDA_T_SANCHEZ`), unless that default ID maps to more than one person; its `note` says so.
+
+Designated nonpartisan races held in secondary elections (most supervisor races are decided in the primaries) are estimated with `--secondary` against the offset a_e′ + b_e′ · lean_i^g; where the second stage has no fit for that election (no D-vs-R contest), against the anchor's lean alone, so that the skew also absorbs that electorate's shift. The `lean_source` column of `nonpartisan_skews.csv` says which. Contest selection is the existing rule (exactly one Democrat and one Republican); multi-candidate primary contests could later enter through a multinomial model.
+
+**First results** (run of `Rscript run.R --secondary` on 2016–2024, November 10, 2026; `output/2016_2018_2020_2022_2024/secondary_*.csv`). The main-fit outputs are byte-for-byte identical to the run without the second stage. The 2014 primary and 2015 special primary are skipped (their anchor, November 2014, is not fitted); the 2019 and 2025 elections have no D-vs-R contest.
+
+| Primary | Contests | Votes with a lean | Shift a_e′ | Slope b_e′ |
+|---|---|---|---|---|
+| June 7, 2016 | 4 | 0.90 | 0.00 | 1.00 |
+| June 5, 2018 | 5 | 0.79 | −0.14 | 0.91 |
+| March 3, 2020 | 4 | 0.99 | 0.06 | 1.20 |
+| June 7, 2022 | 5 | 0.82 | −0.05 | 0.97 |
+| March 5, 2024 | 8 | 1.00 | −0.15 | 1.15 |
+| June 2, 2026 (anchored to November 2024) | 13 | 0.85 | 0.10 | 1.32 |
+
+- **Race skews persist from primary to general.** For the 26 primary races whose two candidates met again for the same office that November, the primary skew and the general skew correlate at 0.82 (20 of 26 with the same sign; regression slope of general on primary 0.82). This is an out-of-sample check that a race skew measures the candidates, not the election.
+- The pooled skew SD of the primaries is 0.11, close to the general elections' 0.06–0.19.
+- Six of 39 races are flagged; 2016 Assembly District 69 (Daly vs. Velarde-Garcia) is flagged in the primary as in the general (slope 0.52), so its departure from partisanship is not a quirk of one election.
+- Twelve primary rows took confirmed links by ballot name (Choi, Linda Sánchez, Archuleta, Diedre Nguyen).
 
 **Weighting into candidate effects.** Once candidate effects are re-specified (methodology improvement 1), secondary-election skews can enter the candidate model as additional observations with a weight below 1 (glmmTMB `weights`), so that a candidate's primary or special-election performance counts, but less than a general election.
 
@@ -295,7 +330,8 @@ In order of expected value. None is implemented; all are to be revisited with th
 4. **Precinct demographics.** The races that partisanship fits worst (Marquez vs. Nguyen, R² 0.32; Tran vs. Steel; Carr vs. Nguyen) suggest candidate-specific geographic appeal. Joining precinct shapefiles to census data would allow candidate × demographic terms. This needs precinct boundaries for each election.
 5. **Baseline definition.** Skews are relative to the average D-vs-R race of each election, which depends on the ballot (2022 has eight statewide races). Anchoring to the top of the ticket or to the statewide races would make skews more comparable across elections.
 6. **Roll-off.** The two-party share ignores ballots that skip the race. A model of D, R, and undervotes together would separate persuasion from drawing voters into the race.
-7. **Housekeeping.** Drop one of each pair of duplicate Senate races (2022 and 2024), and check totals against the PDF statements of votes.
+7. **Multi-candidate races.** Primary contests with several candidates per party (66 partisan contests) and multi-candidate supervisor primaries need a model of all candidates' shares (a multinomial logit with candidate effects and party-specific precinct lean), instead of a two-candidate share distorted by vote-splitting.
+8. **Housekeeping.** Drop one of each pair of duplicate Senate races (2022 and 2024), and check totals against the PDF statements of votes.
 
 ## Next steps
 
@@ -303,4 +339,4 @@ In order of expected value. None is implemented; all are to be revisited with th
 2. Revisit the methodology improvements with the 2026 results, starting with 1 (candidate effects, race-specific terms, and incumbency, designed together) and 2 (a random slope on precinct lean per race).
 3. Fill in `party` and `person_id` in `candidates.csv` for 2012 and 2014, set `ready = TRUE` for both in `R/elections.R`, and link people across years.
 4. Housekeeping: duplicate Senate races, and totals against the PDF statements of votes.
-5. Secondary elections (primaries, odd-year, and special elections): the extracts are downloaded and checked. Agree on the proposal, choose an anchor general for each election (see the match table), and implement the second stage; then consider the multinomial extension for the 66 multi-candidate contests and hand labels for the 2014 primary.
+5. Secondary elections: the second stage is implemented. Open: a precinct crosswalk for the 2019 vacancy election, hand labels for the 2014 primary, and the multi-candidate model (methodology improvement 7). When November 2026 is added, re-anchor the June 2026 primary to it.

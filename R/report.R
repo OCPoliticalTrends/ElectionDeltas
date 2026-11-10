@@ -91,5 +91,24 @@ print_summary <- function(w, fits, loco, cs, ce, np) {
   if (!is.null(np))
     print_section("Designated nonpartisan races",
                   np[, .(election, contest, dem_candidate, rep_candidate, dem_share,
-                         race_skew, race_skew_se, race_skew_pts, slope, R2_shift, fit_flag)])
+                         race_skew, race_skew_se, race_skew_pts, slope, R2_shift, fit_flag, vote_split)])
+}
+
+print_secondary <- function(st) {
+  old <- options(width = 220, datatable.print.nrows = 200)
+  on.exit(options(old))
+  print_section("Secondary elections", st$summary)
+  print_section("Secondary race skews", st$skews[, .(election, contest = substr(contest, 1, 45),
+                                                      dem_candidate, rep_candidate, dem_share,
+                                                      race_skew, race_skew_se, slope, R2_shift,
+                                                      fit_flag, general_race_skew)])
+}
+
+print_measures <- function(ms) {
+  if (is.null(ms)) return(invisible())
+  old <- options(width = 220, datatable.print.nrows = 200)
+  on.exit(options(old))
+  print_section("Statewide propositions (D side chosen from the data)",
+                ms[order(-slope), .(election, contest = substr(contest, 1, 50), d_side, yes_share,
+                                    race_skew, slope, R2_shift, lean_source, fit_flag)])
 }

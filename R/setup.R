@@ -7,6 +7,6 @@ suppressMessages({
 })
 
 for (f in c("config", "layouts", "elections", "load", "lookup", "candidates",
-            "build", "fit", "diagnostics", "nonpartisan", "report")) {
+            "build", "fit", "diagnostics", "nonpartisan", "measures", "secondary", "report")) {
   source(file.path("R", paste0(f, ".R")))
 }

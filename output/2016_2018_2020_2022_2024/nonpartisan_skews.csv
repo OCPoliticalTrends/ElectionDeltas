@@ -1,4 +1,20 @@
-election,contest_id,contest,dem_candidate,rep_candidate,precincts,precincts_without_lean,two_party_votes,dem_share,race_skew,race_skew_se,race_skew_pts,slope,slope_se,R2_shift,R2_slope,fit_flag
-2022-11-08,4002,County Supervisor 2nd District,VICENTE SARMIENTO,KIM BERNICE NGUYEN,212,0,95670,0.5168,-0.314,0.021,-7.8,0.711,0.044,0.485,0.561,poor partisan fit
-2022-11-08,4005,County Supervisor 5th District,KATRINA FOLEY,PATRICIA C. 'PAT' BATES,321,0,226269,0.513,0.196,0.012,4.9,0.695,0.02,0.647,0.807,poor partisan fit
-2024-11-05,4001,County Supervisor 1st District,FRANCES MARQUEZ,JANET NGUYEN,285,0,261294,0.3876,-0.299,0.014,-7.1,0.894,0.076,0.323,0.327,poor partisan fit
+election,contest_id,contest,dem_candidate,rep_candidate,candidates,designated_vote_share,precincts,precincts_without_lean,two_party_votes,dem_share,race_skew,race_skew_se,race_skew_pts,slope,slope_se,R2_shift,R2_slope,lean_source,fit_flag,vote_split
+2016-06-07,742,County Supervisor 1st District,MICHELE MARTINEZ,ANDREW DO,4,0.724,179,16,59409,0.5319,-0.314,0.03,-7.8,0.955,0.054,0.66,0.66,second stage,poor partisan fit,vote-split
+2016-11-08,1400,County Supervisor 1st District,MICHELE MARTINEZ,ANDREW DO,2,1,204,0,151774,0.4979,-0.399,0.021,-10,0.827,0.036,0.71,0.738,main fit,poor partisan fit,""
+2018-06-05,1673,County Supervisor 2nd District,BRENDON PERKINS,MICHELLE STEEL,3,0.88,243,122,78727,0.2805,-0.746,0.022,-15.1,0.211,0.045,-1.056,0.071,second stage,poor partisan fit,vote-split
+2018-06-05,1674,County Supervisor 4th District,DOUG CHAFFEE,TIM SHAW,6,0.411,214,59,28817,0.5019,-0.03,0.043,-0.7,0.358,0.09,-0.105,0.07,second stage,poor partisan fit,vote-split
+2018-11-06,1981,"County Supervisor, 4th District",DOUG CHAFFEE,TIM SHAW,2,1,260,0,152396,0.5043,-0.287,0.023,-7.2,0.374,0.024,-0.867,0.491,main fit,poor partisan fit,""
+2019-03-12,2102,"County Supervisor Third District, Short Term",LORETTA SANCHEZ,DONALD P. WAGNER,7,0.791,60,43,18216,0.4502,-0.106,0.075,-2.6,0.373,0.108,-0.254,0.18,anchor lean,poor partisan fit,vote-split
+2020-03-03,4001,County Supervisor 1st District,SERGIO CONTRERAS,ANDREW DO,4,0.647,202,1,62682,0.3463,-0.922,0.041,-20.9,0.557,0.049,0.188,0.404,second stage,poor partisan fit,vote-split
+2020-03-03,4003,County Supervisor 3rd District,ASHLEIGH AITKEN,DONALD P. WAGNER,2,1,311,2,153585,0.4767,-0.282,0.02,-7,0.578,0.015,0.392,0.844,second stage,poor partisan fit,""
+2020-11-03,4001,"County Supervisor, 1st District",SERGIO CONTRERAS,ANDREW DO,2,1,205,0,204945,0.4816,-0.351,0.018,-8.8,0.718,0.023,0.712,0.837,main fit,poor partisan fit,""
+2021-03-09,4007,"County Supervisor Second District, Short Term",KATRINA FOLEY,JOHN M. W. MOORLACH,5,0.752,343,0,83093,0.5818,0.491,0.013,11.9,1.308,0.046,0.667,0.711,anchor lean,poor partisan fit,vote-split
+2022-06-07,4002,County Supervisor 2nd District,VICENTE SARMIENTO,KIM BERNICE NGUYEN,5,0.573,174,36,29525,0.6168,0.132,0.041,3.1,0.781,0.097,0.3,0.307,second stage,poor partisan fit,vote-split
+2022-06-07,4005,County Supervisor 5th District,KATRINA FOLEY,PATRICIA C. 'PAT' BATES,4,0.639,264,70,79692,0.6608,0.846,0.024,19,0.887,0.058,0.517,0.531,second stage,poor partisan fit,vote-split
+2022-11-08,4002,County Supervisor 2nd District,VICENTE SARMIENTO,KIM BERNICE NGUYEN,2,1,212,0,95670,0.5168,-0.314,0.021,-7.8,0.711,0.044,0.485,0.561,main fit,poor partisan fit,""
+2022-11-08,4005,County Supervisor 5th District,KATRINA FOLEY,PATRICIA C. 'PAT' BATES,2,1,321,0,226269,0.513,0.196,0.012,4.9,0.695,0.02,0.647,0.807,main fit,poor partisan fit,""
+2024-03-05,4001,County Supervisor 1st District,FRANCES MARQUEZ,JANET NGUYEN,5,0.694,244,0,95369,0.3741,-0.16,0.019,-3.7,0.922,0.094,0.286,0.287,second stage,poor partisan fit,vote-split
+2024-03-05,4003,County Supervisor 3rd District,FARRAH N. KHAN,DONALD P. (DON) WAGNER,2,1,286,1,153764,0.3652,-0.294,0.011,-6.8,0.952,0.028,0.801,0.804,second stage,"",""
+2024-11-05,4001,County Supervisor 1st District,FRANCES MARQUEZ,JANET NGUYEN,2,1,285,0,261294,0.3876,-0.299,0.014,-7.1,0.894,0.076,0.323,0.327,main fit,poor partisan fit,""
+2026-06-02,4004,County Supervisor 4th District,CONNOR TRAUT,TIM SHAW,4,0.645,313,42,65033,0.5163,-0.097,0.02,-2.4,0.535,0.053,0.076,0.25,second stage,poor partisan fit,vote-split
+2026-06-02,4005,County Supervisor 5th District,KATRINA FOLEY,DIANE DIXON,3,0.938,319,49,143211,0.4988,0.07,0.016,1.8,0.682,0.021,0.628,0.814,second stage,poor partisan fit,""

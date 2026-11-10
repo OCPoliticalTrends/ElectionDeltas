@@ -38,7 +38,12 @@ default_person_id <- function(name) {
 
 # Add every candidate in a partisan contest of `long` to the lookup at `path`
 # (contests with any party label, or with a partisan office title), keeping
-# the hand-edited columns of rows already there.
+# the hand-edited columns of rows already there. A row new to the lookup whose
+# ballot name gives the same default ID as a row already linked by hand (its
+# person_id differs from its default) takes that person_id, provided the
+# default ID maps to only one person; the note says so.
+CARRIED_NOTE <- "carried from a confirmed link with the same ballot name"
+
 update_candidates <- function(long, path = CANDIDATES_FILE) {
   labeled <- long[party != "", unique(paste(election, contest_id))]
   new <- unique(long[!writein & (paste(election, contest_id) %in% labeled |
@@ -48,12 +53,26 @@ update_candidates <- function(long, path = CANDIDATES_FILE) {
   new[, party := party_file]
   new[, person_id := default_person_id(choice)]
   new[, note := ""]
+  if (file.exists(path)) {
+    old <- read_lookup(path)
+    links <- unique(old[, .(default = default_person_id(choice), person_id)])[
+      , if (.N == 1 && default != person_id) .SD, by = default]
+    fresh <- !new[, paste(election, contest_id, choice_id)] %in%
+      old[, paste(election, contest_id, choice_id)]
+    new[fresh & person_id %in% links$default,
+        `:=`(person_id = links$person_id[match(person_id, links$default)], note = CARRIED_NOTE)]
+  }
   merge_lookup(new, path, CANDIDATE_HAND_COLS)
 }
 
-# Display name of each person: the ballot name in their latest election.
+# Display name of each person: the ballot name in their latest main (general)
+# election, or, for people who ran only in secondary elections, in their
+# latest secondary election.
 candidate_names <- function(cand) {
-  cand[order(election), .(name = choice[.N]), by = person_id]
+  main <- cand[, election %in% names(Filter(function(e) e$role == "main", ELECTIONS))]
+  latest <- function(x) x[order(election), .(name = choice[.N]), by = person_id]
+  a <- latest(cand[main])
+  rbind(a, latest(cand[!main])[!person_id %in% a$person_id])
 }
 
 # Connected components of the graph whose nodes are candidates and whose edges

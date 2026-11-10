@@ -35,4 +35,7 @@ read_election <- function(election, data_dir = DATA_DIR) {
   out[]
 }
 
-read_elections <- function(elections) rbindlist(lapply(elections, read_election))
+# Columns are matched by name: layouts that compute registered voters and
+# ballots add them after the other columns.
+read_elections <- function(elections, data_dir = DATA_DIR)
+  rbindlist(lapply(elections, read_election, data_dir = data_dir), use.names = TRUE)

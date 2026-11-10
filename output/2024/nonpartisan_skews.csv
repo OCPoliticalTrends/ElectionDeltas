@@ -1,2 +1,2 @@
-election,contest_id,contest,dem_candidate,rep_candidate,precincts,precincts_without_lean,two_party_votes,dem_share,race_skew,race_skew_se,race_skew_pts,slope,slope_se,R2_shift,R2_slope,fit_flag
-2024-11-05,4001,County Supervisor 1st District,FRANCES MARQUEZ,JANET NGUYEN,285,0,261294,0.3876,-0.3,0.014,-7.1,0.896,0.076,0.323,0.327,poor partisan fit
+election,contest_id,contest,dem_candidate,rep_candidate,candidates,designated_vote_share,precincts,precincts_without_lean,two_party_votes,dem_share,race_skew,race_skew_se,race_skew_pts,slope,slope_se,R2_shift,R2_slope,lean_source,fit_flag,vote_split
+2024-11-05,4001,County Supervisor 1st District,FRANCES MARQUEZ,JANET NGUYEN,2,1,285,0,261294,0.3876,-0.3,0.014,-7.1,0.896,0.076,0.323,0.327,main fit,poor partisan fit,""

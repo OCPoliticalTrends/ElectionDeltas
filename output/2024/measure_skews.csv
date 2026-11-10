@@ -1,0 +1,11 @@
+election,contest_id,contest,d_side,yes_share,precincts,precincts_without_lean,votes,race_skew,race_skew_se,race_skew_pts,slope,slope_se,R2_shift,R2_slope,lean_source,fit_flag
+2024-11-05,8500,Proposition 2,Yes,0.5342,1494,0,1332240,0.162,0.005,4,0.872,0.015,0.705,0.72,main fit,poor partisan fit
+2024-11-05,8501,Proposition 3,Yes,0.5753,1494,0,1333487,0.333,0.007,8.1,0.494,0.013,0.102,0.533,main fit,poor partisan fit
+2024-11-05,8502,Proposition 4,Yes,0.5289,1494,0,1335175,0.14,0.005,3.5,1.037,0.015,0.791,0.792,main fit,""
+2024-11-05,8503,Proposition 5,Yes,0.3854,1494,0,1321299,-0.461,0.007,-10.9,1.082,0.019,0.705,0.709,main fit,poor partisan fit
+2024-11-05,8504,Proposition 6,Yes,0.4226,1494,0,1302658,-0.302,0.004,-7.4,0.819,0.011,0.776,0.814,main fit,""
+2024-11-05,8505,Proposition 32,Yes,0.3849,1494,0,1342257,-0.463,0.006,-11,1.039,0.016,0.75,0.751,main fit,""
+2024-11-05,8506,Proposition 33,Yes,0.3595,1494,1,1321607,-0.575,0.008,-13.2,1.057,0.022,0.632,0.634,main fit,poor partisan fit
+2024-11-05,8507,Proposition 34,No,0.5534,1494,2,1279745,-0.201,0.009,-5,0.183,0.009,-4.222,0.226,main fit,poor partisan fit
+2024-11-05,8508,Proposition 35,Yes,0.6492,1494,2,1320271,0.654,0.006,14.9,0.816,0.016,0.607,0.646,main fit,poor partisan fit
+2024-11-05,8509,Proposition 36,No,0.7453,1494,1,1338968,-1.086,0.006,-20.6,0.641,0.011,0.466,0.68,main fit,poor partisan fit

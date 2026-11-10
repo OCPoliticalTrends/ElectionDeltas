@@ -97,6 +97,9 @@ ELECTIONS <- list(
 pr <- read_election("2024-03-05", fx)
 check("party-split layout: registered voters and ballots are sums over parties",
       pr$registered == 28L && pr$ballots == 4L)
+mix <- read_elections(c("2024-11-05", "2024-03-05"), fx)
+check("elections of different layouts stack by column name",
+      identical(mix$registered, c(100L, 28L)) && identical(mix$votes, c(5L, 5L)))
 check("party-split layout: Ballots_cast must equal the sum of party ballots", {
   x <- readLines(file.path(fx, "tab2024pp.txt"))
   x[2] <- sub("\t4$", "\t5", x[2]); writeLines(x, file.path(fx, "tab2024pp.txt"))
@@ -143,6 +146,75 @@ partisan <- data.table(election = "2024-11-05", precinct = "1", contest_id = c("
 pc <- update_candidates(partisan, file.path(tmp, "cands.csv"))
 check("partisan-office titles match at the start only (city treasurer excluded)",
       identical(pc$contest_id, "2"))
+
+# ---- Designated nonpartisan races -----------------------------------------------------
+dv <- designated_vote_share(long, data.table(election = "2024-11-05", contest_id = "1",
+                                              choice_id = c("a", "b", "c"), party = c("DEM", "REP", "")))
+check("designated vote share counts all candidates and excludes write-ins and precinct 99999",
+      dv$candidates == 3L && dv$designated_vote_share == round(70 / 75, 3))
+check("vote-split flag fires below the threshold and not at or above it",
+      identical(vote_split_flag(c(0.5, 0.899, 0.9, 1)) != "", c(TRUE, TRUE, FALSE, FALSE)))
+
+# ---- Statewide propositions -----------------------------------------------------------
+ml <- rbind(
+  mk("p1", c("y", "n"), "", c(10L, 5L))[, `:=`(contest = "Proposition 13", choice = c("Yes", "No"))],
+  mk("p2", c("y", "n"), "", c(10L, 5L))[, `:=`(contest = "51-SCHOOL BONDS. FUNDING.", choice = c("YES", "NO"))],
+  mk("p3", c("y", "n"), "", c(10L, 5L))[, `:=`(contest = "A-City of Stanton, Cannabis Tax", choice = c("Yes", "No"))],
+  mk("p4", c("y", "n"), "", c(10L, 5L))[, `:=`(contest = "For Associate Justice of the Supreme Court X", choice = c("Yes", "No"))],
+  mk("p5", c("y", "n", "m"), "", c(10L, 5L, 1L))[, `:=`(contest = "Proposition 99", choice = c("Yes", "No", "Maybe"))])
+md <- measure_designations(ml)
+check("statewide propositions of both title styles are selected; local, judicial, and non-Yes/No are not",
+      identical(sort(unique(md$contest_id)), c("p1", "p2")))
+check("propositions start with Yes as the D side", all(md[toupper(choice) == "YES", party] == "DEM") &&
+        all(md[toupper(choice) == "NO", party] == "REP"))
+fl <- flip_designations(md, data.table(election = "2024-11-05", contest_id = "p2"))
+check("flipping makes No the D side for the listed measure only",
+      fl[contest_id == "p2" & toupper(choice) == "NO", party] == "DEM" &&
+        fl[contest_id == "p1" & toupper(choice) == "YES", party] == "DEM")
+
+# ---- Carrying confirmed links and display names ------------------------------------
+cp <- file.path(tmp, "links.csv")
+write_lookup(data.table(
+  election = "2024-11-05", contest_id = "1", contest = "MEMBER OF THE STATE ASSEMBLY 1st District",
+  choice_id = c("1", "2", "3", "4"),
+  choice = c("LINDA T. S-NCHEZ", "STEVEN S. CHOI", "JANE DOE", "JANE DOE"),
+  party_file = "DEM", party = "DEM",
+  person_id = c("LINDA_T_SANCHEZ", "STEVEN_CHOI", "JANE_DOE", "JANE_DOE_2"), note = "confirmed"), cp)
+prim <- data.table(election = "2026-06-02", precinct = "1", contest_id = "9",
+                   contest = "MEMBER OF THE STATE ASSEMBLY 1st District", choice_id = c("1", "2", "3"),
+                   choice = c("LINDA T. S-NCHEZ", "JANE DOE", "STEVEN S CHOI"), party = "DEM",
+                   writein = FALSE, votes = 1L, registered = 1L, ballots = 1L)
+ELECTIONS[["2026-06-02"]] <- list(type = "primary", role = "secondary", anchor = "2024-11-05")
+ELECTIONS[["2024-11-05"]]$role <- "main"
+lk2 <- update_candidates(prim, cp)
+check("a new row with the same ballot name as a confirmed link takes that person",
+      lk2[election == "2026-06-02" & choice == "LINDA T. S-NCHEZ", person_id] == "LINDA_T_SANCHEZ" &&
+        lk2[election == "2026-06-02" & choice == "STEVEN S CHOI", note] == CARRIED_NOTE)
+check("a ballot name linked to two people is not carried",
+      lk2[election == "2026-06-02" & choice == "JANE DOE", person_id] == "JANE_DOE")
+check("existing rows keep their hand-edited links",
+      identical(lk2[election == "2024-11-05", person_id],
+                c("LINDA_T_SANCHEZ", "STEVEN_CHOI", "JANE_DOE", "JANE_DOE_2")))
+nm <- candidate_names(rbind(lk2, data.table(election = "2026-06-02", contest_id = "9", contest = "",
+  choice_id = "8", choice = "ONLY IN PRIMARY", party_file = "", party = "", person_id = "ONLY", note = "")))
+check("display names come from general elections first",
+      nm[person_id == "STEVEN_CHOI", name] == "STEVEN S. CHOI" && nm[person_id == "ONLY", name] == "ONLY IN PRIMARY")
+
+# ---- Second stage --------------------------------------------------------------------
+check("second stage uses secondary elections whose anchor is in the run",
+      { p <- secondary_plan("2024-11-05"); "2026-06-02" %in% p$use && !"2026-06-02" %in% p$skipped })
+check("second stage skips secondary elections whose anchor is not in the run",
+      "2026-06-02" %in% secondary_plan("2022-11-08")$skipped)
+check("second stage: one shift and slope per election, or one of each for a single election",
+      grepl("0 + election + election:lean", deparse1(secondary_formula(2)), fixed = TRUE) &&
+        grepl("1 + lean", deparse1(secondary_formula(1)), fixed = TRUE))
+ELECTIONS <- saved
+set.seed(1)
+syn <- data.table(offset = seq(-1.5, 1.5, length.out = 60), n = 4000L)
+syn[, D := as.integer(round(n * plogis(offset + 0.2)))][, R := n - D]
+st <- race_fit_stats(syn)
+check("race fit statistics recover a known shift and slope",
+      abs(st$shift - 0.2) < 0.01 && abs(st$slope - 1) < 0.02 && st$R2_shift > 0.99)
 
 # ---- Candidate graph ---------------------------------------------------------------
 g <- data.table(candD = c("A", "A", "C"), candR = c("X", "Y", "Z"))

@@ -1,7 +1,76 @@
 election,contest_id,contest,choice_id,choice,party
+2016-06-07,742,County Supervisor 1st District,2979,PHAT BUI,""
+2016-06-07,742,County Supervisor 1st District,2980,ANDREW DO,REP
+2016-06-07,742,County Supervisor 1st District,2981,MICHELE MARTINEZ,DEM
+2016-06-07,742,County Supervisor 1st District,2982,STEVE ROCCO,""
+2016-11-08,1400,County Supervisor 1st District,4947,ANDREW DO,REP
+2016-11-08,1400,County Supervisor 1st District,4948,MICHELE MARTINEZ,DEM
+2018-06-05,1673,County Supervisor 2nd District,6164,BRENDON PERKINS,DEM
+2018-06-05,1673,County Supervisor 2nd District,6165,MICHELLE STEEL,REP
+2018-06-05,1673,County Supervisor 2nd District,6166,MICHAEL MAHONY,""
+2018-06-05,1674,County Supervisor 4th District,6167,LUCILLE KRING,""
+2018-06-05,1674,County Supervisor 4th District,6168,JOE KERR,""
+2018-06-05,1674,County Supervisor 4th District,6169,CYNTHIA AGUIRRE,""
+2018-06-05,1674,County Supervisor 4th District,6170,TIM SHAW,REP
+2018-06-05,1674,County Supervisor 4th District,6171,DOUG CHAFFEE,DEM
+2018-06-05,1674,County Supervisor 4th District,6172,ROSE ESPINOZA,""
+2018-11-06,1981,"County Supervisor, 4th District",7022,DOUG CHAFFEE,DEM
+2018-11-06,1981,"County Supervisor, 4th District",7023,TIM SHAW,REP
+2019-03-12,2102,"County Supervisor Third District, Short Term",7429,"KIM-THY ""KATIE"" HOANG BAYLISS",""
+2019-03-12,2102,"County Supervisor Third District, Short Term",7430,LARRY BALES,""
+2019-03-12,2102,"County Supervisor Third District, Short Term",7431,"KRISTINE ""KRIS"" MURRAY",""
+2019-03-12,2102,"County Supervisor Third District, Short Term",7432,LORETTA SANCHEZ,DEM
+2019-03-12,2102,"County Supervisor Third District, Short Term",7433,KATHERINE DAIGLE,""
+2019-03-12,2102,"County Supervisor Third District, Short Term",7434,DEBORAH PAULY,""
+2019-03-12,2102,"County Supervisor Third District, Short Term",7435,DONALD P. WAGNER,REP
+2020-03-03,4001,County Supervisor 1st District,9525,ANDREW DO,REP
+2020-03-03,4001,County Supervisor 1st District,9536,MIGUEL A. PULIDO,""
+2020-03-03,4001,County Supervisor 1st District,9564,SERGIO CONTRERAS,DEM
+2020-03-03,4001,County Supervisor 1st District,9605,KIM BERNICE NGUYEN,""
+2020-03-03,4003,County Supervisor 3rd District,9562,ASHLEIGH AITKEN,DEM
+2020-03-03,4003,County Supervisor 3rd District,9569,DONALD P. WAGNER,REP
+2020-11-03,4001,"County Supervisor, 1st District",9776,ANDREW DO,REP
+2020-11-03,4001,"County Supervisor, 1st District",9777,SERGIO CONTRERAS,DEM
+2021-03-09,4007,"County Supervisor Second District, Short Term",10397,JOHN M. W. MOORLACH,REP
+2021-03-09,4007,"County Supervisor Second District, Short Term",10398,KATRINA FOLEY,DEM
+2021-03-09,4007,"County Supervisor Second District, Short Term",10399,JANET RAPPAPORT,""
+2021-03-09,4007,"County Supervisor Second District, Short Term",10400,MICHAEL VO,""
+2021-03-09,4007,"County Supervisor Second District, Short Term",10401,KEVIN MULDOON,""
+2022-06-07,4002,County Supervisor 2nd District,10603,JON DUMITRU,""
+2022-06-07,4002,County Supervisor 2nd District,10617,VICENTE SARMIENTO,DEM
+2022-06-07,4002,County Supervisor 2nd District,10637,KIM BERNICE NGUYEN,REP
+2022-06-07,4002,County Supervisor 2nd District,10639,JUAN VILLEGAS,""
+2022-06-07,4002,County Supervisor 2nd District,10640,"CECILIA ""CECI"" IGLESIAS",""
+2022-06-07,4004,County Supervisor 4th District,10500,STEVEN C. VARGAS,""
+2022-06-07,4004,County Supervisor 4th District,10509,SUNNY PARK,""
+2022-06-07,4004,County Supervisor 4th District,10590,DOUG CHAFFEE,""
+2022-06-07,4005,County Supervisor 5th District,10507,DIANE L. HARKEY,""
+2022-06-07,4005,County Supervisor 5th District,10522,KATRINA FOLEY,DEM
+2022-06-07,4005,County Supervisor 5th District,10618,PATRICIA C. 'PAT' BATES,REP
+2022-06-07,4005,County Supervisor 5th District,10658,KEVIN MULDOON,""
 2022-11-08,4002,County Supervisor 2nd District,10855,VICENTE SARMIENTO,DEM
 2022-11-08,4002,County Supervisor 2nd District,10856,KIM BERNICE NGUYEN,REP
+2022-11-08,4004,County Supervisor 4th District,10857,SUNNY PARK,""
+2022-11-08,4004,County Supervisor 4th District,10858,DOUG CHAFFEE,""
 2022-11-08,4005,County Supervisor 5th District,10859,KATRINA FOLEY,DEM
 2022-11-08,4005,County Supervisor 5th District,10860,PATRICIA C. 'PAT' BATES,REP
+2024-03-05,4001,County Supervisor 1st District,11416,MICHAEL VO,""
+2024-03-05,4001,County Supervisor 1st District,11417,JANET NGUYEN,REP
+2024-03-05,4001,County Supervisor 1st District,11547,VAN TRAN,""
+2024-03-05,4001,County Supervisor 1st District,11563,FRANCES MARQUEZ,DEM
+2024-03-05,4001,County Supervisor 1st District,11762,KIMBERLY HO,""
+2024-03-05,4003,County Supervisor 3rd District,11419,DONALD P. (DON) WAGNER,REP
+2024-03-05,4003,County Supervisor 3rd District,11526,FARRAH N. KHAN,DEM
 2024-11-05,4001,County Supervisor 1st District,11868,JANET NGUYEN,REP
 2024-11-05,4001,County Supervisor 1st District,11869,FRANCES MARQUEZ,DEM
+2026-06-02,4002,County Supervisor 2nd District,12405,KIMBERLY DAVIS,""
+2026-06-02,4002,County Supervisor 2nd District,12445,NELIDA MENDOZA,""
+2026-06-02,4002,County Supervisor 2nd District,12538,JAMES WALLACE,""
+2026-06-02,4002,County Supervisor 2nd District,12562,VICENTE SARMIENTO,""
+2026-06-02,4004,County Supervisor 4th District,12394,FRED JUNG,""
+2026-06-02,4004,County Supervisor 4th District,12411,TIM SHAW,REP
+2026-06-02,4004,County Supervisor 4th District,12431,ROSE ESPINOZA,""
+2026-06-02,4004,County Supervisor 4th District,12449,CONNOR TRAUT,DEM
+2026-06-02,4005,County Supervisor 5th District,12407,LUCY VELLEMA,""
+2026-06-02,4005,County Supervisor 5th District,12422,KATRINA FOLEY,DEM
+2026-06-02,4005,County Supervisor 5th District,12563,DIANE DIXON,REP

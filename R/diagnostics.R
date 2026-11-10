@@ -47,6 +47,25 @@ leave_one_contest_out <- function(w, cores = N_CORES) {
   rbindlist(res)
 }
 
+# How a race's precinct-level shares follow a given prediction. `t` has one
+# row per precinct with D, R, n, and `offset` (the predicted logit). Fits
+#   logit(pi_i) = offset_i + shift          (quasi-binomial)
+#   logit(pi_i) = a + slope * offset_i      (quasi-binomial)
+# and returns the shift with its SE, the slope with its SE, and the R^2 of the
+# empirical logits after each fit.
+race_fit_stats <- function(t) {
+  f0 <- glm(cbind(D, R) ~ 1 + offset(offset), data = t, family = quasibinomial())
+  f1 <- glm(cbind(D, R) ~ offset, data = t, family = quasibinomial())
+  el <- elogit(t$D, t$R)
+  wt <- t$n
+  tot <- el - weighted.mean(el, wt)
+  shift <- unname(coef(f0)[1])
+  list(shift = shift, shift_se = sqrt(vcov(f0)[1, 1]),
+       slope = unname(coef(f1)[2]), slope_se = sqrt(vcov(f1)[2, 2]),
+       R2_shift = weighted_R2(el - t$offset - shift, tot, wt),
+       R2_slope = weighted_R2(el - predict(f1), tot, wt))
+}
+
 # A race is flagged when one precinct lean predicts it poorly: its R^2 after a
 # single shift is below POOR_FIT$min_R2, or its slope on the lean lies outside
 # POOR_FIT$slope. For a partisan race the slope and R^2 come from the
