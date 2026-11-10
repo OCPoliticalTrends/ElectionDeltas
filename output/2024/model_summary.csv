@@ -1,0 +1,33 @@
+model,term,value
+cand_olre,converged,1
+cand_olre,AIC,66792.8
+cand_olre,intercept (Intercept),0.001241
+cand_olre,sd prec_key,0.423
+cand_olre,sd candD,0.09211
+cand_olre,sd candR,0.09211
+cand_olre,sd obs,0.005858
+cand_bb,converged,0
+cand_bb,AIC,
+cand_bb,intercept (Intercept),0.001247
+cand_bb,sd prec_key,0.423
+cand_bb,sd candD,0.09209
+cand_bb,sd candR,0.09209
+cand_bb,sd betabinomial phi,72840
+contest_olre,converged,1
+contest_olre,AIC,66795.5
+contest_olre,intercept (Intercept),0.001132
+contest_olre,sd prec_key,0.423
+contest_olre,sd contest_key,0.1268
+contest_olre,sd obs,0.005738
+contest_bb,converged,1
+contest_bb,AIC,66794.8
+contest_bb,intercept (Intercept),0.001141
+contest_bb,sd prec_key,0.423
+contest_bb,sd contest_key,0.1268
+contest_bb,sd betabinomial phi,74710
+contest_olre_by_election,converged,1
+contest_olre_by_election,AIC,66795.5
+contest_olre_by_election,intercept (Intercept),0.001132
+contest_olre_by_election,sd prec_key,0.423
+contest_olre_by_election,sd contest_key,0.1268
+contest_olre_by_election,sd obs,0.005738

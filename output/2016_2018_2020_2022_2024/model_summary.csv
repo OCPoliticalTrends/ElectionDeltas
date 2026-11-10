@@ -1,0 +1,57 @@
+model,term,value
+cand_olre,converged,1
+cand_olre,AIC,369609.4
+cand_olre,intercept election2016-11-08,-0.05772
+cand_olre,intercept election2018-11-06,0.06951
+cand_olre,intercept election2020-11-03,-0.02078
+cand_olre,intercept election2022-11-08,-0.01092
+cand_olre,intercept election2024-11-05,0.01866
+cand_olre,sd prec_key,0.5268
+cand_olre,sd candD,0.1132
+cand_olre,sd candR,0.09538
+cand_olre,sd obs,1.055e-05
+cand_bb,converged,1
+cand_bb,AIC,369609.4
+cand_bb,intercept election2016-11-08,-0.05772
+cand_bb,intercept election2018-11-06,0.06951
+cand_bb,intercept election2020-11-03,-0.02078
+cand_bb,intercept election2022-11-08,-0.01092
+cand_bb,intercept election2024-11-05,0.01866
+cand_bb,sd prec_key,0.5268
+cand_bb,sd candD,0.1132
+cand_bb,sd candR,0.09538
+cand_bb,sd betabinomial phi,137200000
+contest_olre,converged,1
+contest_olre,AIC,369429.2
+contest_olre,intercept election2016-11-08,-0.1185
+contest_olre,intercept election2018-11-06,0.1048
+contest_olre,intercept election2020-11-03,0.06715
+contest_olre,intercept election2022-11-08,0.007866
+contest_olre,intercept election2024-11-05,0.000296
+contest_olre,sd prec_key,0.5269
+contest_olre,sd contest_key,0.1233
+contest_olre,sd obs,1.091e-05
+contest_bb,converged,0
+contest_bb,AIC,
+contest_bb,intercept election2016-11-08,-0.1185
+contest_bb,intercept election2018-11-06,0.1045
+contest_bb,intercept election2020-11-03,0.06704
+contest_bb,intercept election2022-11-08,0.008008
+contest_bb,intercept election2024-11-05,0.0004599
+contest_bb,sd prec_key,0.5265
+contest_bb,sd contest_key,0.1233
+contest_bb,sd betabinomial phi,7.718e+11
+contest_olre_by_election,converged,1
+contest_olre_by_election,AIC,369410.4
+contest_olre_by_election,intercept election2016-11-08,-0.1178
+contest_olre_by_election,intercept election2018-11-06,0.1047
+contest_olre_by_election,intercept election2020-11-03,0.06715
+contest_olre_by_election,intercept election2022-11-08,0.007631
+contest_olre_by_election,intercept election2024-11-05,0.0003073
+contest_olre_by_election,sd prec_key,0.5268
+contest_olre_by_election,sd contest_key election2016-11-08,0.1875
+contest_olre_by_election,sd contest_key election2018-11-06,0.1085
+contest_olre_by_election,sd contest_key election2020-11-03,0.1377
+contest_olre_by_election,sd contest_key election2022-11-08,0.05937
+contest_olre_by_election,sd contest_key election2024-11-05,0.1267
+contest_olre_by_election,sd obs,9.236e-06

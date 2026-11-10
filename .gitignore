@@ -1,0 +1,10 @@
+# Raw statement-of-votes extracts: public county data, re-downloadable from the
+# OC Vote archive (see PLAN.md); kept out of the repository.
+/data/
+
+# Local and system files
+.DS_Store
+.Rhistory
+.RData
+.Rproj.user/
+/.claude/settings.local.json

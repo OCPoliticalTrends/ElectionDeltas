@@ -1,0 +1,39 @@
+model,term,value
+cand_olre,converged,1
+cand_olre,AIC,182610.7
+cand_olre,intercept election2022-11-08,-0.01577
+cand_olre,intercept election2024-11-05,0.01338
+cand_olre,sd prec_key,0.4747
+cand_olre,sd candD,0.07664
+cand_olre,sd candR,0.05822
+cand_olre,sd obs,4.293e-06
+cand_bb,converged,0
+cand_bb,AIC,
+cand_bb,intercept election2022-11-08,-0.01577
+cand_bb,intercept election2024-11-05,0.01339
+cand_bb,sd prec_key,0.4747
+cand_bb,sd candD,0.07666
+cand_bb,sd candR,0.05818
+cand_bb,sd betabinomial phi,529200000
+contest_olre,converged,1
+contest_olre,AIC,182568.6
+contest_olre,intercept election2022-11-08,0.007798
+contest_olre,intercept election2024-11-05,0.0005007
+contest_olre,sd prec_key,0.4746
+contest_olre,sd contest_key,0.09334
+contest_olre,sd obs,4.024e-06
+contest_bb,converged,1
+contest_bb,AIC,182568.6
+contest_bb,intercept election2022-11-08,0.007803
+contest_bb,intercept election2024-11-05,0.0005091
+contest_bb,sd prec_key,0.4746
+contest_bb,sd contest_key,0.09335
+contest_bb,sd betabinomial phi,1.155e+09
+contest_olre_by_election,converged,1
+contest_olre_by_election,AIC,182558.2
+contest_olre_by_election,intercept election2022-11-08,0.007618
+contest_olre_by_election,intercept election2024-11-05,0.0006781
+contest_olre_by_election,sd prec_key,0.4746
+contest_olre_by_election,sd contest_key election2022-11-08,0.05936
+contest_olre_by_election,sd contest_key election2024-11-05,0.1267
+contest_olre_by_election,sd obs,3.885e-06

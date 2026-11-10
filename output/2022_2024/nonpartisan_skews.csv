@@ -1,0 +1,4 @@
+election,contest_id,contest,dem_candidate,rep_candidate,precincts,precincts_without_lean,two_party_votes,dem_share,race_skew,race_skew_se,race_skew_pts,slope,slope_se,R2_shift,R2_slope,fit_flag
+2022-11-08,4002,County Supervisor 2nd District,VICENTE SARMIENTO,KIM BERNICE NGUYEN,212,0,95670,0.5168,-0.314,0.021,-7.8,0.712,0.044,0.486,0.561,poor partisan fit
+2022-11-08,4005,County Supervisor 5th District,KATRINA FOLEY,PATRICIA C. 'PAT' BATES,321,0,226269,0.513,0.196,0.012,4.9,0.696,0.02,0.649,0.807,poor partisan fit
+2024-11-05,4001,County Supervisor 1st District,FRANCES MARQUEZ,JANET NGUYEN,285,0,261294,0.3876,-0.3,0.014,-7.1,0.894,0.076,0.323,0.327,poor partisan fit
