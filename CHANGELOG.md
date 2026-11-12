@@ -2,6 +2,10 @@
 
 Each entry says whether a change can move a number in an existing result.
 
+## 2026-11-12 (documentation)
+
+**No numbers move.** A project `CLAUDE.md` points to `PLAN.md` as the source of background and lists how to run, test, and log changes.
+
 ## 2026-11-10 (documentation)
 
 **No numbers move.** PLAN.md gains a "Fit flags" section stating the poor-fit and vote-split rules in full: the two regressions, the thresholds and how they were chosen, where each kind of race gets its prediction, and the limits. The comment on `fit_flag()` in `R/diagnostics.R` now matches it.
